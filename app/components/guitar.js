@@ -4,7 +4,6 @@ import styles from '../../styles/guitarras.module.css'
 
 export default function Guitar({ guitar }) {
 	const { title, price, image, description, url } = guitar
-	console.log(guitar);
 	return (
 		<div className={styles.guitarra}>
 			<Image src={image.data.attributes.formats.medium.url} width={600} height={400} alt={`Guitar ${title}`} />
