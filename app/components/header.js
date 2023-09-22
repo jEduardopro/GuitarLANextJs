@@ -18,6 +18,9 @@ export default function Header() {
 					<Link className={pathname === '/aboutus' ? styles.active: ''} href='/aboutus'>About Us</Link>
 					<Link className={pathname === '/store' ? styles.active: ''} href='/store'>Store</Link>
 					<Link className={pathname === '/blog' ? styles.active: ''} href='/blog'>Blog</Link>
+					<Link className={pathname === '/cart' ? styles.active : ''} href='/cart'>
+						<Image src='/img/carrito.png' width={30} height={25} alt='cart' />
+					</Link>
 				</nav>
 			</div>
 		</header>
