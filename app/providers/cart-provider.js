@@ -1,11 +1,22 @@
 'use client'
 
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 
 export const CartContext = createContext({})
 
 export default function CartProvider({ children }) {
-	const [cart, setCart] = useState([])
+	const cartStorageExists = typeof window !== 'undefined' ? localStorage.getItem('cart') : false
+	const cartFromStorage = cartStorageExists ? JSON.parse(cartStorageExists) : []
+	const [cart, setCart] = useState(cartFromStorage)
+	const [clientReady, setClientReady] = useState(false)
+
+	useEffect(() => {
+		setClientReady(true)
+	}, [])
+
+	useEffect(() => {
+		localStorage.setItem('cart', JSON.stringify(cart))
+	}, [cart])
 
 	const addToCart = guitar => {
 		console.log('add to cart this guitar: ', guitar);
@@ -27,7 +38,7 @@ export default function CartProvider({ children }) {
 	const deleteProduct = id => {
 		const cartUpdated = cart.filter(product => product.id != id)
 		setCart(cartUpdated)
-		window.localStorage.setItem('cart', JSON.stringify(cart));
+		localStorage.setItem('cart', JSON.stringify(cart));
 	}
 	
 	const updateQuantity = guitar => {
@@ -38,12 +49,13 @@ export default function CartProvider({ children }) {
 			return guitarState
 		})
 		setCart(cartUpdated)
-		window.localStorage.setItem('cart', JSON.stringify(cart));
+		localStorage.setItem('cart', JSON.stringify(cart));
 	}
 
-	return (
+	return clientReady && (
 		<CartContext.Provider
 			value={{
+				cart,
 				addToCart,
 				deleteProduct,
 				updateQuantity
